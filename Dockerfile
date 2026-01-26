@@ -2,36 +2,41 @@ FROM php:8.2-fpm
 
 # تثبيت المتطلبات
 RUN apt-get update && apt-get install -y \
-    libjpeg-dev \
-    libpng-dev \
-    libwebp-dev \
-    libzip-dev \
+    nginx \
+    git \
+    curl \
     zip \
     unzip \
-    git \
-    curl
+    libpng-dev \
+    libjpeg-dev \
+    libwebp-dev \
+    libzip-dev
 
-# تفعيل extensions المطلوبة
-RUN docker-php-ext-install \
-    pdo \
-    pdo_mysql \
-    exif
+# إضافات PHP
+RUN docker-php-ext-install pdo pdo_mysql zip exif
 
 # تثبيت Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# مجلد التطبيق
+# إعداد مجلد العمل
 WORKDIR /var/www
 
-# نسخ الملفات
+# نسخ المشروع
 COPY . .
 
-# تثبيت الحزم
-RUN composer install --no-dev --optimize-autoloader
-
-# إعطاء صلاحيات
+# صلاحيات
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-EXPOSE 8080
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+# تثبيت الباكجات
+RUN composer install --no-dev --optimize-autoloader
 
+# إعداد Nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# 🔥 تشغيل migration تلقائيًا عند التشغيل
+CMD php artisan migrate --force && \
+    php artisan config:clear && \
+    php artisan route:clear && \
+    php artisan view:clear && \
+    php-fpm -D && \
+    nginx -g 'daemon off;'
