@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Session extends Model
 {
     //
+    protected $table="session_state";
         protected $fillable = [
         'group_id',
         'lesson_id',
