@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sessionstudents', function (Blueprint $table) {
              $table->id();
-             $table->foreignId('session_id')->constrained()->cascadeOnDelete();
+             $table->foreignId('session_id')->constrained('class_sessions')->cascadeOnDelete();
              $table->foreignId('student_id')->constrained('users')->cascadeOnDelete();
              $table->timestamp('watched_at')->nullable();
              $table->timestamp('submitted_at')->nullable();

@@ -22,7 +22,7 @@ class SessionStudent extends Model
 
     public function classsession()
     {
-        return $this->belongsTo(ClassSession::class);
+          return $this->belongsTo(ClassSession::class, 'session_id');
     }
 
 }
