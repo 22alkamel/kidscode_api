@@ -52,10 +52,11 @@ class Lesson extends Model
     {
         return $this->hasMany(ExamProject::class);
     }
-    
-    public function sessions()
+
+public function classSessions()
 {
-    return $this->hasMany(Session::class);
+    return $this->hasMany(ClassSession::class);
 }
+
 
 }

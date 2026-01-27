@@ -27,4 +27,10 @@ class ProgramGroup extends Model
     {
         return $this->belongsToMany(User::class, 'group_students', 'group_id', 'student_id');
     }
+    
+    public function classSessions()
+{
+    return $this->hasMany(ClassSession::class, 'group_id');
+}
+
 }

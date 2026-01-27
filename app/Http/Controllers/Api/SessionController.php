@@ -5,25 +5,32 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;  
 use Illuminate\Http\Request;
-use App\Models\Session;
+use App\Models\ClassSession;
 use App\Models\SessionStudent;
+use App\Models\Question;
+use App\Models\StudentAnswer;
 
-class SessionController extends Controller
+
+class ClassSessionController extends Controller
 {
     //
 
     public function store(Request $request)
 {
-    $session = Session::create([
-        'group_id' => $request->group_id,
-        'lesson_id' => $request->lesson_id,
-        'video_url' => $request->video_url,
-        'publish_at' =>now(),
-        'is_active' => $request->is_active ?? true,
+    $data = $request->validate([
+        'group_id' => 'required|exists:program_groups,id',
+        'lesson_id' => 'required|exists:lessons,id',
+        'video_url' => 'nullable|string',
+        'is_active' => 'boolean',
     ]);
 
-    return response()->json($session);
+    $data['publish_at'] = now();
+
+    $classSession = ClassSession::create($data);
+
+    return response()->json($classSession, 201);
 }
+
 
 
 public function studentSessions()
@@ -32,7 +39,7 @@ public function studentSessions()
 
     $groupIds = $student->groups->pluck('id');
 
-    return Session::whereIn('group_id', $groupIds)
+    return ClassSession::whereIn('group_id', $groupIds)
         ->where('publish_at', '<=', now())
         ->with('lesson')
         ->orderBy('publish_at', 'desc')
@@ -100,12 +107,12 @@ public function sessionReport($sessionId)
 
 public function groupSessions($groupId)
 {
-    $sessions = Session::with('lesson')
+    $classSession = ClassSession::with('lesson')
         ->where('group_id', $groupId)
         ->orderBy('publish_at', 'desc')
         ->get();
 
-    return response()->json($sessions);
+    return response()->json($classSession);
 }
 
 

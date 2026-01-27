@@ -17,7 +17,9 @@ use App\Http\Controllers\Api\Admin\QuestionController as AdminQuestionController
 use App\Http\Controllers\Api\Admin\ExamProjectController as AdminExamProjectController;
 
 use App\Http\Controllers\Api\ProgramGroupController;
-use App\Http\Controllers\Api\SessionController;
+use App\Http\Controllers\Api\ClassSessionController;
+
+// use App\Http\Controllers\Api\SessionController;
 // use App\Http\Controllers\Api\TrackController;
 // use App\Http\Controllers\Api\LessonController;
 
@@ -125,14 +127,33 @@ Route::middleware(['auth:sanctum','otp.verified'])->group(function () {
 
         
 
+Route::prefix('class-sessions')->group(function () {
 
+    // إنشاء حصة جديدة (للإدارة / المدرب)
+    Route::post('/', [ClassSessionController::class, 'store']);
 
-         Route::post('/sessions', [SessionController::class, 'store']);
-    Route::get('/student/sessions', [SessionController::class, 'studentSessions']);
-    Route::post('/sessions/{id}/watched', [SessionController::class, 'markWatched']);
-    Route::post('/sessions/{id}/submit', [SessionController::class, 'submitAnswers']);
-    Route::get('/sessions/{id}/report', [SessionController::class, 'sessionReport']);
-    Route::get('/groups/{groupId}/sessions', [SessionController::class, 'groupSessions']);
+    // حصص الطالب المسجل فيها
+    Route::get('/student', [ClassSessionController::class, 'studentSessions']);
+
+    // تعليم الحصة كمشاهدة
+    Route::post('{id}/watched', [ClassSessionController::class, 'markWatched']);
+
+    // تسليم إجابات الحصة
+    Route::post('{id}/submit', [ClassSessionController::class, 'submitAnswers']);
+
+    // تقرير الحصة (للإدارة)
+    Route::get('{id}/report', [ClassSessionController::class, 'sessionReport']);
+});
+
+// جلب حصص مجموعة معينة
+Route::get('/groups/{groupId}/class-sessions', [ClassSessionController::class, 'groupSessions']);
+
+    //      Route::post('/sessions', [SessionController::class, 'store']);
+    // Route::get('/student/sessions', [SessionController::class, 'studentSessions']);
+    // Route::post('/sessions/{id}/watched', [SessionController::class, 'markWatched']);
+    // Route::post('/sessions/{id}/submit', [SessionController::class, 'submitAnswers']);
+    // Route::get('/sessions/{id}/report', [SessionController::class, 'sessionReport']);
+    // Route::get('/groups/{groupId}/sessions', [SessionController::class, 'groupSessions']);
 
   
 

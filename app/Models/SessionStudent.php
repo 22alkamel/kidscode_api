@@ -20,9 +20,9 @@ class SessionStudent extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function session()
+    public function classsession()
     {
-        return $this->belongsTo(Session::class);
+        return $this->belongsTo(ClassSession::class);
     }
 
 }
