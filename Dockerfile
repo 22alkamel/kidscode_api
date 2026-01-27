@@ -34,7 +34,8 @@ RUN composer install --no-dev --optimize-autoloader
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # 🔥 تشغيل migration تلقائيًا عند التشغيل
-CMD php artisan migrate:fresh --force || true && \
+CMD php artisan migrate:fresh --force && \
+    php artisan db:seed --class=RoleSeeder && \
+    php artisan db:seed --class=AdminUserSeeder && \
     php-fpm -D && \
     nginx -g 'daemon off;'
-
