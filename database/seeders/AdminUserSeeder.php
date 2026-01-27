@@ -47,6 +47,7 @@ class AdminUserSeeder extends Seeder
         }
 
         // ربط الأدمن بالـ role في Spatie
-        $admin->assignRole('admin');
+        $admin->assignRole(Role::where('name','admin')->where('guard_name','api')->first());
+
     }
 }
