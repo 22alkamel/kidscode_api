@@ -12,12 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('student_answers', function (Blueprint $table) {
-             $table->id();
-             $table->foreignId('student_id')->constrained('users')->cascadeOnDelete();
-             $table->foreignId('question_id')->constrained()->cascadeOnDelete();
-             $table->text('answer');
-             $table->boolean('is_correct')->default(false);
-             $table->timestamps();
+            $table->id();
+            $table->foreignId('student_id')
+                  ->constrained('users')
+                  ->cascadeOnDelete();
+            $table->foreignId('question_id')
+                  ->constrained() // Laravel يستخدم اسم الجدول 'questions' افتراضيًا
+                  ->cascadeOnDelete();
+            $table->text('answer');
+            $table->boolean('is_correct')->default(false);
+            $table->timestamps();
         });
     }
 
