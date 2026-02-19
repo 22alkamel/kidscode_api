@@ -20,6 +20,7 @@ class ProgramController extends Controller
 //    }
 
 
+
 public function index(Request $req) {
   if ($req->has('age')) {
     $age = (int) $req->age;
@@ -36,15 +37,20 @@ public function index(Request $req) {
   return response()->json(['data' => $programs], 200);
 }
 
-public function show($id) {
-  $program = Program::with('tracks')->findOrFail($id);
-  return response()->json(['data' => $program], 200);
+public function show(Program $program)
+{
+    $program->load('tracks');
+
+    return response()->json([
+        'data' => $program
+    ]);
 }
 
-public function tracks($id) {
-  $program = Program::findOrFail($id);
-  return response()->json(['data' => $program->tracks], 200);
+public function tracks($program_slug) {
+    $program = Program::where('slug', $program_slug)->firstOrFail();
+    return response()->json(['data' => $program->tracks], 200);
 }
+
 
 
     public function store(Request $request)
@@ -114,6 +120,7 @@ public function tracks($id) {
         'program' => $program
     ]);
 }
+
 
 
 

@@ -33,7 +33,12 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Public programs
 Route::get('/programs', [ProgramController::class, 'index']);
-Route::get('/programs/{slug}', [ProgramController::class, 'show']);
+Route::get('/programs/{program}', [ProgramController::class, 'show']);
+
+Route::get('/programs/{program_slug}/tracks', [ProgramController::class, 'tracks']);
+
+
+
 
 
 // Protected routes (Sanctum + OTP verified)

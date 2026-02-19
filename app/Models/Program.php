@@ -48,5 +48,10 @@ class Program extends Model
         return $this->hasMany(ExamProject::class);
     }
 
+    public function getRouteKeyName()
+{
+    return 'slug';
+}
+
     
 }

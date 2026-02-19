@@ -13,7 +13,14 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Admin',
             'email' => 'admin@kidscode.com',
-            'password' => Hash::make('password123'),
+            'password' => Hash::make('12345678'),
+            'role'=>'admin'
+        ]);
+
+         User::create([
+            'name' => 'student',
+            'email' => 'student@gmail.com',
+            'password' => Hash::make('12345678'),
             'role'=>'admin'
         ]);
     }
