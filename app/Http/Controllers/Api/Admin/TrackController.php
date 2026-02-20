@@ -6,12 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Track;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Models\Program;
 
 class TrackController extends Controller
 {
-   public function index($programId)
+   public function index($program)
 {
-    return Track::where('program_id', $programId)
+    $program = Program::where('id', $program)
+        ->orWhere('slug', $program)
+        ->firstOrFail();
+
+    return Track::where('program_id', $program->id)
         ->orderBy('order')
         ->paginate(10);
 }
