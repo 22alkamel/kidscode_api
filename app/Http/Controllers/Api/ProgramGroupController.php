@@ -48,7 +48,7 @@ class ProgramGroupController extends Controller
     // ===== تعديل الجروب =====
     public function update(Request $request, ProgramGroup $group)
     {
-        $this->authorize('access-group', $group);
+        // $this->authorize('access-group', $group);
 
         $data = $request->validate([
             'name' => 'string|max:120',

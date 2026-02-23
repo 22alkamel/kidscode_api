@@ -20,7 +20,7 @@ class ProgramController extends Controller
 {
     $validated = $request->validate([
         'title' => 'required|string|max:160',
-        'slug' => 'required|string|max:255|unique:programs,slug,',
+        // 'slug' => 'required|string|max:255|unique:programs,slug,',
         'description' => 'nullable|string',
         'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         'level' => 'required|in:beginner,intermediate,advanced',
@@ -81,10 +81,7 @@ class ProgramController extends Controller
         $data['image'] = $request->file('image')->store('images', 'public');
     }
 
-        //  if ($request->hasFile('image')) {
-        // $imagePath = $request->file('image')->store('images', 'public');
-        // $data['image'] = $imagePath;
-        // }
+        
 
         $program->update($data);
 
