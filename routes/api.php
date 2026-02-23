@@ -123,7 +123,9 @@ Route::middleware(['auth:sanctum','otp.verified'])->group(function () {
         Route::delete('/groups/{group}', [ProgramGroupController::class, 'destroy']);
         Route::get('/groups/{group}/students', [ProgramGroupController::class, 'students']);
         Route::post('/groups/{group}/add-student', [ProgramGroupController::class, 'addStudent']);
-        Route::get('/programs/{program}/groups/{group}/available-students', [ProgramGroupController::class, 'availableStudents']);
+        // Route::get('/programs/{program}/groups/{group}/available-students', [ProgramGroupController::class, 'availableStudents']);
+        // api.php
+        Route::get('/programs/{program:slug}/groups/{group}/available-students', [ProgramGroupController::class, 'availableStudents']);
 
         // Class Sessions
         Route::prefix('class-sessions')->group(function () {

@@ -135,23 +135,23 @@ if (!$registered) {
     ]);
 }
 
-
-// جلب الطلاب المتاحين للإضافة لجروب معين
-public function availableStudents($programId, $groupId)
+public function availableStudents($programSlug, $groupId)
 {
+    $program = Program::where('slug', $programSlug)->firstOrFail();
+    $group = ProgramGroup::findOrFail($groupId);
+
     $students = Registration::with('user')
-        ->where('program_id', $programId)
+        ->where('program_id', $program->id)
         ->where('status', 'confirmed')
-        ->whereDoesntHave('groupStudents', function($q) use ($groupId) {
-            $q->where('group_id', $groupId);
+        ->whereDoesntHave('groupStudents', function($q) use ($group) {
+            $q->where('group_id', $group->id);
         })
         ->get()
-        ->map(function ($registration) {
-            return [
-                'id' => $registration->user->id,
-                'name' => $registration->user->name,
-            ];
-        });
+        ->filter(fn($registration) => $registration->user)
+        ->map(fn($registration) => [
+            'id' => $registration->user->id,
+            'name' => $registration->user->name,
+        ]);
 
     return response()->json($students);
 }
