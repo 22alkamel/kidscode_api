@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class SessionStudent extends Model
 {
     //
+        protected $table = 'sessionstudents'; 
+        
     protected $fillable = [
         'session_id',
         'student_id',

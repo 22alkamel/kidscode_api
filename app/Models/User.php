@@ -62,6 +62,8 @@ class User extends Authenticatable
     );
     }
 
+    
+
     // التسجيلات في البرامج
     public function enrollments()
     {

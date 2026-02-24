@@ -63,6 +63,23 @@ Route::middleware(['auth:sanctum','otp.verified'])->group(function () {
     Route::get('/programs/{program}/enrollments', [EnrollmentController::class, 'programEnrollments'])->middleware('permission:view_enrollments');
     Route::post('/enrollments/{enrollment}/confirm', [EnrollmentController::class, 'confirmPayment'])->middleware('permission:confirm_payments');
 
+     // جلب الحصص للطالب حسب البرنامج
+    Route::get('/class-sessions/student', [ClassSessionController::class, 'studentSessions']);
+    
+    // تعليم الحصة أنها تمت مشاهدتها
+    Route::post('/class-sessions/{id}/watched', [ClassSessionController::class, 'markWatched']);
+
+    // إرسال إجابات الطالب للاختبارات
+    Route::post('/class-sessions/{id}/submit', [ClassSessionController::class, 'submitAnswers']);
+
+     Route::get('/student/groups', [ClassSessionController::class, 'studentGroups']);
+
+     
+    Route::post('/session-student/submit', [ClassSessionController::class, 'submit']);
+
+    // جلب الإجابات المحفوظة والنتيجة لجلسة معينة
+    Route::get('/session-student/{sessionId}', [ClassSessionController::class, 'getSessionStudent']);
+
     // ---------------------------
     // Admin Routes
     // ---------------------------
